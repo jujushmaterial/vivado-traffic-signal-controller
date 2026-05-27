@@ -15,6 +15,20 @@ This project implements an improved FSM-based traffic signal controller using Ve
 
 ---
 
+## Project Information
+
+| Item | Description |
+|---|---|
+| Period | 2026.05 |
+| Course | Digital Logic Circuit |
+| Tool | Vivado 2025.2 |
+| Language | Verilog |
+| Design Type | FSM-based sequential logic |
+| Verification | Testbench and behavioral simulation |
+| Status | Completed |
+
+---
+
 ## Project Page
 
 [View Project Page](https://jujushmaterial.github.io/vivado-traffic-signal-controller/)
@@ -36,3 +50,4 @@ vivado-traffic-signal-controller/
 └── src/
     ├── traffic_signal_cntr_improved.v
     └── tb_traffic_signal_cntr_improved.v
+```
