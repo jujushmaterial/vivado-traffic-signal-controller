@@ -19,6 +19,7 @@ This project implements an improved FSM-based traffic signal controller using Ve
 |---|---|
 | Course | Digital Logic Circuit |
 | Project | Improved Traffic Signal Controller |
+| Period | 2026.05 |
 | Tool | Vivado 2025.2 |
 | Language | Verilog |
 | Design Type | FSM-based sequential logic |
@@ -163,10 +164,7 @@ Testbench는 다음과 같은 구성으로 설계하였습니다.
 | Night + Emergency | Night Mode 중 emergency 발생 시 `S6 → S5 → S6` 동작이 정상적으로 수행되는지 확인 |
 
 **Summary:**  
-The testbench verifies one normal traffic cycle from `S0` to `S0`, green time limitation, emergency priority, Night OFF Mode, and the interaction between Night Mode and Emergency Mode.
-
-**Summary:**  
-The testbench verifies reset behavior, normal traffic cycles, green time limitation, emergency priority, Night OFF Mode, and the interaction between Night Mode and Emergency Mode.
+The testbench verifies one normal traffic cycle from `S0` back to `S0`, green time limitation, emergency priority, Night OFF Mode, and the interaction between Night Mode and Emergency Mode.
 
 ---
 
