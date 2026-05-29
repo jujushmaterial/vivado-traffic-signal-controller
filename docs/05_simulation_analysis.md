@@ -21,9 +21,12 @@ This simulation verifies the improved traffic signal controller by checking norm
 
 ## 2. Full Waveform Structure
 
-전체 waveform은 testbench의 입력 시나리오에 따라 다음 구간으로 나누어 해석할 수 있습니다.
+출력된 전체 waveform은 다음과 같습니다.
 
 ![Full Simulation Waveform](../images/simulation_full.png)
+
+전체 waveform은 testbench의 입력 시나리오에 따라 다음 구간으로 나누어 해석할 수 있습니다.
+
 ![Full Simulation Waveform](../images/simulation_full_check.png)
 
 | Section             | Verification Target                        |
