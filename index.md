@@ -8,6 +8,8 @@
 
 본 프로젝트에서는 기존 구조에 Emergency Mode, Country Road Green Time Limit, Night OFF Mode를 추가하고, Verilog design source와 testbench를 통해 동작을 검증했습니다.
 
+> 설계 과정, 코드 해석, testbench 구성, simulation 결과 분석을 자세히 보고 싶다면 [9. Detailed Documents](#9-detailed-documents)에서 바로 확인할 수 있습니다.
+
 **Summary:**  
 This project implements an improved FSM-based traffic signal controller using Verilog and Vivado. It adds Emergency Mode, Country Road Green Time Limit, and Night OFF Mode, and verifies the design through a Verilog testbench and behavioral simulation.
 
