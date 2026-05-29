@@ -43,11 +43,33 @@ This project implements an improved FSM-based traffic signal controller using Ve
 ## Repository Structure
 
 ```text
+Repository Structure
+
 vivado-traffic-signal-controller/
 │
 ├── README.md
 ├── index.md
-└── src/
-    ├── traffic_signal_cntr_improved.v
-    └── tb_traffic_signal_cntr_improved.v
+│
+├── src/
+│   ├── traffic_signal_cntr_improved.v
+│   └── tb_traffic_signal_cntr_improved.v
+│
+├── docs/
+│   ├── 01_project_overview.md
+│   ├── 02_fsm_design.md
+│   ├── 03_verilog_code_explanation.md
+│   ├── 04_testbench_design.md
+│   └── 05_simulation_analysis.md
+│
+└── images/
+    ├── state_diagram.png
+    ├── state_output_table.png
+    ├── simulation_full.png
+    ├── simulation_full_check.png
+    ├── simulation_cycle1_green_count.png
+    ├── simulation_cycle2_car_removed.png
+    ├── simulation_emergency.png
+    ├── simulation_night_mode.png
+    ├── simulation_night_emergency.png
+    └── simulation_green_count_detail.png
 ```
