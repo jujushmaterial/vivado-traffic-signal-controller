@@ -211,33 +211,27 @@ vivado-traffic-signal-controller/
 ├── README.md
 ├── index.md
 │
-└── src/
-    ├── traffic_signal_cntr_improved.v
-    └── tb_traffic_signal_cntr_improved.v
-```
-
-추가 문서, 이미지, 발표자료는 아래 구조로 정리할 수 있습니다.
-
-```text
-docs/
-├── 01_project_overview.md
-├── 02_fsm_design.md
-├── 03_verilog_code_explanation.md
-├── 04_testbench_design.md
-└── 05_simulation_analysis.md
-
-images/
-├── state_diagram.png
-├── simulation_full.png
-├── simulation_full_check.png
-├── simulation_cycle1_green_count.png
-├── simulation_cycle2_car_removed.png
-├── simulation_emergency.png
-├── simulation_night_mode.png
-└── simulation_night_emergency.png
-
-reports/
-└── final_presentation_public.pdf
+├── src/
+│   ├── traffic_signal_cntr_improved.v
+│   └── tb_traffic_signal_cntr_improved.v
+│
+├── docs/
+│   ├── 01_project_overview.md
+│   ├── 02_fsm_design.md
+│   ├── 03_verilog_code_explanation.md
+│   ├── 04_testbench_design.md
+│   └── 05_simulation_analysis.md
+│
+└── images/
+    ├── state_diagram.png
+    ├── state_output_table.png
+    ├── simulation_full.png
+    ├── simulation_cycle1_green_count.png
+    ├── simulation_cycle2_car_removed.png
+    ├── simulation_emergency.png
+    ├── simulation_night_mode.png
+    ├── simulation_night_emergency.png
+    └── simulation_green_count_detail.png
 ```
 
 ---
