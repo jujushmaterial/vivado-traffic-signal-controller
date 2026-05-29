@@ -24,6 +24,7 @@ This simulation verifies the improved traffic signal controller by checking norm
 전체 waveform은 testbench의 입력 시나리오에 따라 다음 구간으로 나누어 해석할 수 있습니다.
 
 ![Full Simulation Waveform](../images/simulation_full.png)
+![Full Simulation Waveform](../images/simulation_full_check.png)
 
 | Section             | Verification Target                        |
 | ------------------- | ------------------------------------------ |
