@@ -184,7 +184,24 @@ Simulation results confirm that the FSM correctly handles normal traffic flow, g
 
 ---
 
-## 9. Repository Structure
+## 9. Detailed Documents
+
+프로젝트의 설계 과정, 코드 해석, testbench 구성, simulation 결과 분석은 아래 문서에 정리했습니다.
+
+| Document | Description |
+|---|---|
+| [01. Project Overview](./docs/01_project_overview.md) | 프로젝트 배경, 기존 Traffic Signal Controller 구조, 개선 방향 정리 |
+| [02. FSM Design](./docs/02_fsm_design.md) | FSM state, state transition, Moore FSM 구조, state diagram 설명 |
+| [03. Verilog Code Explanation](./docs/03_verilog_code_explanation.md) | Verilog design source의 module, parameter, counter, next state logic, output logic 해석 |
+| [04. Testbench Design](./docs/04_testbench_design.md) | testbench 구조, clock generation, reset, normal cycle, emergency, night mode 검증 시나리오 설명 |
+| [05. Simulation Analysis](./docs/05_simulation_analysis.md) | Vivado simulation waveform을 기반으로 기능별 동작 결과 분석 |
+
+**Summary:**  
+Detailed documents are organized separately to explain the project background, FSM design, Verilog source code, testbench strategy, and simulation results.
+
+---
+
+## 10. Repository Structure
 
 ```text
 vivado-traffic-signal-controller/
@@ -210,6 +227,7 @@ docs/
 images/
 ├── state_diagram.png
 ├── simulation_full.png
+├── simulation_full_check.png
 ├── simulation_cycle1_green_count.png
 ├── simulation_cycle2_car_removed.png
 ├── simulation_emergency.png
@@ -222,7 +240,7 @@ reports/
 
 ---
 
-## 10. What I Learned
+## 11. What I Learned
 
 - Verilog module, input/output, reg/wire 구조
 - parameter를 이용한 state 및 output encoding
@@ -238,7 +256,7 @@ Through this project, I practiced basic Verilog HDL design, FSM-based sequential
 
 ---
 
-## 11. Conclusion
+## 12. Conclusion
 
 기존 Traffic Signal Controller에 Emergency Mode, Country Road Green Time Limit, Night OFF Mode를 추가했습니다.
 
