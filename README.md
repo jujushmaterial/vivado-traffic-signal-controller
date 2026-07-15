@@ -43,8 +43,6 @@ This project implements an improved FSM-based traffic signal controller using Ve
 ## Repository Structure
 
 ```text
-Repository Structure
-
 vivado-traffic-signal-controller/
 │
 ├── README.md
