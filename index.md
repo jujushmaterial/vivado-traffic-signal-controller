@@ -226,6 +226,7 @@ vivado-traffic-signal-controller/
     ├── state_diagram.png
     ├── state_output_table.png
     ├── simulation_full.png
+    ├── simulation_full_check.png
     ├── simulation_cycle1_green_count.png
     ├── simulation_cycle2_car_removed.png
     ├── simulation_emergency.png
