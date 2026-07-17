@@ -1,0 +1,13 @@
+title: Vivado Verilog Traffic Signal Controller
+description: FSM-based traffic signal controller with emergency, green-time-limit, and night-off modes, verified using Vivado behavioral simulation.
+theme: jekyll-theme-cayman
+show_downloads: false
+lang: ko-KR
+exclude:
+  - index.md
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: default
