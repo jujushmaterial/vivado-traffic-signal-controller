@@ -39,7 +39,7 @@
 
         <div class="hero-actions">
           <a class="button button--dark" href="./study/">설계 상세보기</a>
-          <button class="button" type="button" data-code-file="src/traffic_signal_cntr_improved.v" data-code-title="Traffic Signal Controller Design Source">코드 보기</button>
+          <button class="button" type="button" data-code-group="vivado-main">코드 보기</button>
           <a class="button" href="./results/">시뮬레이션 결과</a>
           <a class="button" href="./docs/">설계 문서</a>
         </div>
@@ -69,7 +69,7 @@
         <a href="#implementation">Verilog Structure</a>
         <a href="#testbench">Testbench</a>
         <a href="#verification">Simulation</a>
-        <a href="#learning">What I Learned</a>
+        <a href="#scope">Verification Scope</a>
         <a href="#resources">Resources</a>
       </aside>
 
@@ -135,16 +135,11 @@
           <p>green_count는 S3에서만 증가하고, 모든 기능은 clock edge 기준으로 상태 전이를 거쳐 출력에 반영되는 것을 확인했습니다.</p>
         </section>
 
-        <section id="learning">
-          <p class="section-label">07 · WHAT I LEARNED</p>
-          <h2>디지털 순차논리 설계와 검증 흐름</h2>
-          <ul>
-            <li>Moore FSM 상태 확장과 입력 우선순위 설계</li>
-            <li>non-blocking assignment와 clock edge 기반 state update 해석</li>
-            <li>counter를 이용한 시간 제한 기능 구현</li>
-            <li>testbench 입력 시나리오 구성과 waveform 분석</li>
-            <li>설계 코드와 검증 코드를 분리해 기능별 요구사항을 확인하는 방법</li>
-          </ul>
+        <section id="scope">
+          <p class="section-label">07 · VERIFICATION SCOPE</p>
+          <h2>검증 범위 및 향후 확장</h2>
+          <p>본 프로젝트는 Verilog RTL 설계와 Vivado behavioral simulation을 통해 FSM 상태 전이, 입력 우선순위 제어 및 Country Road Green 시간 제한 기능을 검증했습니다.</p>
+          <p>현재 검증 범위는 behavioral simulation이며, FPGA 보드 구현, 실제 I/O 연결, synthesis 및 timing 검증은 향후 확장 범위입니다.</p>
         </section>
 
         <section id="resources">
@@ -169,6 +164,7 @@
     <div class="floating-code-backdrop" data-floating-code-close></div>
     <div class="floating-code-window">
       <div class="floating-code-titlebar"><strong id="floating-code-title">Verilog Source Code</strong><button class="floating-code-close" type="button" data-floating-code-close aria-label="Close code viewer">×</button></div>
+      <div class="floating-code-tabs" id="floating-code-tabs" aria-label="Source file tabs"></div>
       <div class="floating-code-toolbar"><span class="floating-code-file" id="floating-code-file">source file</span><div class="floating-code-actions"><button type="button" id="floating-code-line">Line</button><button type="button" id="floating-code-copy">Copy</button><a id="floating-code-github" href="https://github.com/jujushmaterial/vivado-traffic-signal-controller" target="_blank" rel="noopener">GitHub</a></div></div>
       <div class="floating-editor-shell"><pre class="floating-code-lines" id="floating-code-lines" aria-hidden="true"></pre><pre class="floating-code-scroll" id="floating-code-scroll" tabindex="0"><code id="floating-code-content"></code></pre><div class="floating-code-minimap" id="floating-code-minimap" aria-label="Code minimap"></div></div>
     </div>
