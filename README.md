@@ -25,7 +25,7 @@ This project implements an improved FSM-based traffic signal controller using Ve
 | Language | Verilog |
 | Design Type | FSM-based sequential logic |
 | Verification | Testbench and behavioral simulation |
-| Status | Completed |
+| Status | Complete |
 
 ---
 
