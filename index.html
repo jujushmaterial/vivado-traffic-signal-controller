@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vivado Verilog Traffic Signal Controller</title>
+  <meta name="description" content="FSM-based traffic signal controller with emergency, country-road green-time limit, and night-off modes">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+  <link rel="stylesheet" href="assets/css/project-v2.css">
+  <link rel="stylesheet" href="assets/css/code-viewer.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-name" href="https://jujushmaterial.github.io/">Sanghyeon Ju</a>
+      <nav class="site-nav" aria-label="Portfolio navigation">
+        <a href="https://jujushmaterial.github.io/">HOME</a>
+        <a href="https://jujushmaterial.github.io/projects.html">PROJECTS</a>
+        <a href="https://github.com/jujushmaterial/vivado-traffic-signal-controller">GITHUB</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="project-hero">
+      <div class="project-hero__inner">
+        <p class="eyebrow">VIVADO · VERILOG · DIGITAL LOGIC</p>
+        <h1>Vivado Verilog Traffic Signal Controller</h1>
+        <p class="hero-summary">기존 FSM 기반 신호등 제어기에 Emergency Mode, Country Road Green Time Limit, Night OFF Mode를 추가하고 Verilog testbench와 Vivado behavioral simulation으로 검증한 프로젝트입니다.</p>
+
+        <div class="project-meta" aria-label="Project metadata">
+          <div><span>Period</span><strong>2026.05</strong></div>
+          <div><span>Status</span><strong class="status"><i></i>Complete</strong></div>
+          <div><span>Tools</span><strong>Vivado 2025.2 · Verilog · Behavioral Simulation</strong></div>
+        </div>
+
+        <div class="hero-actions">
+          <a class="button button--dark" href="./study/">설계 상세보기</a>
+          <button class="button" type="button" data-code-file="src/traffic_signal_cntr_improved.v" data-code-title="Traffic Signal Controller Design Source">코드 보기</button>
+          <a class="button" href="./results/">시뮬레이션 결과</a>
+          <a class="button" href="./docs/">설계 문서</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero-visual" aria-label="Project visual summary">
+      <div class="hero-visual__image">
+        <img src="./images/simulation_full.png" alt="Vivado behavioral simulation waveform">
+      </div>
+      <div class="hero-visual__summary">
+        <h2>프로젝트 요약</h2>
+        <dl>
+          <div><dt>개요</dt><dd>기존 5-state Traffic Signal Controller를 7-state Moore FSM으로 확장한 디지털 설계 프로젝트</dd></div>
+          <div><dt>목적</dt><dd>예외 처리, 시간 제한, 야간 운용을 추가하고 testbench 기반 검증 흐름을 직접 구현</dd></div>
+          <div><dt>결과</dt><dd>Emergency 우선 처리, Country Road Green 제한, Night OFF와 Night 중 Emergency 동작을 behavioral simulation으로 확인</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <div class="project-layout">
+      <aside class="toc" aria-label="Page contents">
+        <p>Contents</p>
+        <a href="#overview">Overview</a>
+        <a href="#features">Added Features</a>
+        <a href="#fsm">FSM Design</a>
+        <a href="#implementation">Verilog Structure</a>
+        <a href="#testbench">Testbench</a>
+        <a href="#verification">Simulation</a>
+        <a href="#learning">What I Learned</a>
+        <a href="#resources">Resources</a>
+      </aside>
+
+      <article class="project-article">
+        <section id="overview">
+          <p class="section-label">01 · OVERVIEW</p>
+          <h2>기본 신호등 FSM을 실제 상황에 맞게 확장</h2>
+          <p>기본 구조는 Main Highway와 Country Road의 신호를 순차적으로 전환하는 FSM입니다. 본 프로젝트에서는 단순 정상 주기만 구현하는 데서 그치지 않고, 응급상황과 야간 운용, Country Road Green 상태의 무한 유지 문제를 보완했습니다.</p>
+          <div class="result-strip">
+            <div><span>FSM</span><strong>Moore · 7 states</strong></div>
+            <div><span>Inputs</span><strong>car · emergency · night</strong></div>
+            <div><span>Timing</span><strong>green_count</strong></div>
+            <div><span>Verification</span><strong>Behavioral simulation</strong></div>
+          </div>
+        </section>
+
+        <section id="features">
+          <p class="section-label">02 · ADDED FEATURES</p>
+          <h2>세 가지 기능 추가</h2>
+          <ol class="feature-list">
+            <li><strong>Emergency Mode</strong><br>일반 상태 S0–S4와 Night Mode S6에서 emergency 입력이 들어오면 S5로 이동해 Main Highway Green을 우선 출력합니다.</li>
+            <li><strong>Country Road Green Time Limit</strong><br>S3에서만 증가하는 green_count와 GREEN_LIMIT를 이용해 차량 감지가 계속되어도 Country Road Green이 무한히 유지되지 않도록 했습니다.</li>
+            <li><strong>Night OFF Mode</strong><br>남는 2-bit 출력값 11을 OFF로 정의하고 S6에서 두 신호등을 모두 소등하되 emergency 입력은 계속 우선 처리합니다.</li>
+          </ol>
+        </section>
+
+        <section id="fsm">
+          <p class="section-label">03 · FSM DESIGN</p>
+          <h2>7-state Moore FSM</h2>
+          <figure><img src="./images/state_diagram.png" alt="Traffic signal controller state diagram"><figcaption>S0–S4 정상 주기에 S5 Emergency와 S6 Night OFF를 추가한 state diagram.</figcaption></figure>
+          <div class="table-wrap"><table><thead><tr><th>State</th><th>Main Highway</th><th>Country Road</th><th>Role</th></tr></thead><tbody>
+            <tr><td>S0</td><td>Green</td><td>Red</td><td>Default</td></tr><tr><td>S1</td><td>Yellow</td><td>Red</td><td>Main transition</td></tr><tr><td>S2</td><td>Red</td><td>Red</td><td>All Red</td></tr><tr><td>S3</td><td>Red</td><td>Green</td><td>Country Green</td></tr><tr><td>S4</td><td>Red</td><td>Yellow</td><td>Country transition</td></tr><tr><td>S5</td><td>Green</td><td>Red</td><td>Emergency</td></tr><tr><td>S6</td><td>OFF</td><td>OFF</td><td>Night OFF</td></tr>
+          </tbody></table></div>
+          <p class="note">입력 우선순위는 emergency → night_mode → normal traffic condition 순으로 구성했습니다.</p>
+        </section>
+
+        <section id="implementation">
+          <p class="section-label">04 · VERILOG STRUCTURE</p>
+          <h2>State Register · Next State Logic · Output Logic</h2>
+          <p>FSM style-1 구조를 사용해 현재 상태 저장, 조합논리 기반 다음 상태 결정, Moore 출력 논리를 분리했습니다. green_count는 clock 상승 edge에서 현재 state가 S3일 때만 증가합니다.</p>
+          <div class="code-action-grid">
+            <button class="code-open-button" type="button" data-code-file="src/traffic_signal_cntr_improved.v" data-code-title="Traffic Signal Controller Design Source"><strong>Design Source</strong><span>FSM·counter·output logic 전체 코드</span></button>
+            <button class="code-open-button" type="button" data-code-file="src/tb_traffic_signal_cntr_improved.v" data-code-title="Traffic Signal Controller Testbench"><strong>Testbench</strong><span>Reset·normal cycle·emergency·night mode 검증</span></button>
+          </div>
+        </section>
+
+        <section id="testbench">
+          <p class="section-label">05 · TESTBENCH</p>
+          <h2>입력 시나리오 기반 기능 검증</h2>
+          <div class="table-wrap"><table><thead><tr><th>Test</th><th>Verification Target</th></tr></thead><tbody>
+            <tr><td>Reset</td><td>S0 초기화와 기본 출력</td></tr><tr><td>Normal Cycle 1</td><td>차량 유지 시 GREEN_LIMIT에 의한 S3 종료</td></tr><tr><td>Normal Cycle 2</td><td>차량 제거 시 즉시 S3 → S4</td></tr><tr><td>Emergency</td><td>S0–S4 어느 상태에서도 S5 진입</td></tr><tr><td>Night Mode</td><td>S6에서 두 신호등 OFF</td></tr><tr><td>Night + Emergency</td><td>S6 → S5 → S6 복귀</td></tr>
+          </tbody></table></div>
+        </section>
+
+        <section id="verification">
+          <p class="section-label">06 · BEHAVIORAL SIMULATION</p>
+          <h2>파형으로 기능별 동작 확인</h2>
+          <figure><img src="./images/simulation_full.png" alt="Full behavioral simulation"><figcaption>전체 testbench 입력과 출력 파형.</figcaption></figure>
+          <div class="image-pair">
+            <figure><img src="./images/simulation_emergency.png" alt="Emergency mode simulation"><figcaption>Emergency priority verification.</figcaption></figure>
+            <figure><img src="./images/simulation_night_emergency.png" alt="Night and emergency simulation"><figcaption>Night Mode 중 Emergency 진입과 복귀.</figcaption></figure>
+          </div>
+          <p>green_count는 S3에서만 증가하고, 모든 기능은 clock edge 기준으로 상태 전이를 거쳐 출력에 반영되는 것을 확인했습니다.</p>
+        </section>
+
+        <section id="learning">
+          <p class="section-label">07 · WHAT I LEARNED</p>
+          <h2>디지털 순차논리 설계와 검증 흐름</h2>
+          <ul>
+            <li>Moore FSM 상태 확장과 입력 우선순위 설계</li>
+            <li>non-blocking assignment와 clock edge 기반 state update 해석</li>
+            <li>counter를 이용한 시간 제한 기능 구현</li>
+            <li>testbench 입력 시나리오 구성과 waveform 분석</li>
+            <li>설계 코드와 검증 코드를 분리해 기능별 요구사항을 확인하는 방법</li>
+          </ul>
+        </section>
+
+        <section id="resources">
+          <p class="section-label">08 · RESOURCES</p>
+          <h2>자료와 코드</h2>
+          <div class="resource-list">
+            <a href="./study/"><strong>Design Study</strong><span>설계 상세보기</span></a>
+            <a href="./source/"><strong>Source Code</strong><span>Verilog 코드 확인</span></a>
+            <a href="./results/"><strong>Simulation Results</strong><span>기능별 파형 분석</span></a>
+            <a href="./reproducibility/"><strong>Reproducibility</strong><span>Vivado 재현 방법</span></a>
+            <a href="./docs/"><strong>Design Documents</strong><span>세부 설계 문서</span></a>
+            <a href="./references/"><strong>References</strong><span>참고자료</span></a>
+          </div>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer"><a href="https://jujushmaterial.github.io/">← Portfolio Home</a><a href="https://github.com/jujushmaterial/vivado-traffic-signal-controller">GitHub Repository</a><span>Sanghyeon Ju © 2026</span></footer>
+
+  <div class="floating-code-modal" id="floating-code-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="floating-code-title">
+    <div class="floating-code-backdrop" data-floating-code-close></div>
+    <div class="floating-code-window">
+      <div class="floating-code-titlebar"><strong id="floating-code-title">Verilog Source Code</strong><button class="floating-code-close" type="button" data-floating-code-close aria-label="Close code viewer">×</button></div>
+      <div class="floating-code-toolbar"><span class="floating-code-file" id="floating-code-file">source file</span><div class="floating-code-actions"><button type="button" id="floating-code-line">Line</button><button type="button" id="floating-code-copy">Copy</button><a id="floating-code-github" href="https://github.com/jujushmaterial/vivado-traffic-signal-controller" target="_blank" rel="noopener">GitHub</a></div></div>
+      <div class="floating-editor-shell"><pre class="floating-code-lines" id="floating-code-lines" aria-hidden="true"></pre><pre class="floating-code-scroll" id="floating-code-scroll" tabindex="0"><code id="floating-code-content"></code></pre><div class="floating-code-minimap" id="floating-code-minimap" aria-label="Code minimap"></div></div>
+    </div>
+  </div>
+  <script src="assets/js/code-viewer.js"></script>
+</body>
+</html>
