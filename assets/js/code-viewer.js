@@ -16,9 +16,34 @@
   const githubLink = document.getElementById('floating-code-github');
   const copyButton = document.getElementById('floating-code-copy');
   const lineButton = document.getElementById('floating-code-line');
+  let tabs = document.getElementById('floating-code-tabs');
+
   if (!modal || !codeElement || !codeScroll || !codeLines || !minimap || !fileName || !githubLink) return;
 
+  if (!tabs) {
+    tabs = document.createElement('div');
+    tabs.id = 'floating-code-tabs';
+    tabs.className = 'floating-code-tabs';
+    tabs.setAttribute('aria-label', 'Source file tabs');
+    modal.querySelector('.floating-code-toolbar')?.before(tabs);
+  }
+
   const repo = 'jujushmaterial/vivado-traffic-signal-controller';
+  const groups = {
+    'vivado-main': [
+      {
+        label: 'Design Source',
+        path: 'src/traffic_signal_cntr_improved.v',
+        title: 'Traffic Signal Controller Design Source'
+      },
+      {
+        label: 'Testbench',
+        path: 'src/tb_traffic_signal_cntr_improved.v',
+        title: 'Traffic Signal Controller Testbench'
+      }
+    ]
+  };
+
   const cache = new Map();
   let currentPath = '';
   let currentCode = '';
@@ -26,7 +51,10 @@
   let dragging = false;
   let dragOffset = 0;
 
-  const keywords = new Set(['module','endmodule','input','output','wire','reg','parameter','always','begin','end','if','else','case','endcase','default','initial','forever','assign','posedge','negedge']);
+  const keywords = new Set([
+    'module','endmodule','input','output','wire','reg','parameter','always','begin','end',
+    'if','else','case','endcase','default','initial','forever','assign','posedge','negedge'
+  ]);
   const commands = new Set(['timescale','monitor','finish']);
   const escapeHtml = (value) => value.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
   const tokenPattern = /"[^"\n]*"|\b\d+'[bdhoBDHO][0-9a-fA-FxXzZ_]+\b|\b\d+(?:\.\d+)?\b|\$[A-Za-z_][A-Za-z0-9_]*|\b[A-Za-z_][A-Za-z0-9_]*\b/g;
@@ -41,10 +69,10 @@
       let cls = '';
       if (token.startsWith('"')) cls = 'tok-string';
       else if (token.startsWith('$')) cls = 'tok-command';
-      else if (/^(?:\d|'\w)/.test(token)) cls = 'tok-number';
+      else if (/^\d/.test(token)) cls = 'tok-number';
       else if (keywords.has(token)) cls = 'tok-keyword';
       else if (commands.has(token)) cls = 'tok-command';
-      else if (/^(state|next_state|green_count|clock|reset|emergency|night_mode|car_country|hwy|cntry)$/.test(token)) cls = 'tok-variable';
+      else if (/^(state|next_state|green_count|clock|reset|emergency|night_mode|car_country|car_on_countryroad|hwy|cntry|main_highway_signal|country_signal)$/.test(token)) cls = 'tok-variable';
       output += cls ? `<span class="${cls}">${escapeHtml(token)}</span>` : escapeHtml(token);
       last = index + token.length;
     }
@@ -95,6 +123,7 @@
     codeLines.textContent = lines.map((_, i) => i + 1).join('\n');
     codeScroll.scrollTop = 0;
     codeScroll.scrollLeft = 0;
+    codeLines.scrollTop = 0;
     renderMinimap(code);
   };
 
@@ -109,10 +138,17 @@
     return code;
   };
 
+  const markActiveTab = (path) => {
+    tabs.querySelectorAll('.floating-code-tab').forEach((tab) => {
+      tab.classList.toggle('is-active', tab.dataset.path === path);
+    });
+  };
+
   const showFile = async (path, title) => {
     currentPath = path;
     fileName.textContent = title || path.split('/').pop();
     githubLink.href = githubUrl(path);
+    markActiveTab(path);
     codeElement.innerHTML = '<span class="code-loading">Loading full source file…</span>';
     codeLines.textContent = '';
     minimap.innerHTML = '';
@@ -125,19 +161,42 @@
     }
   };
 
+  const configureTabs = (files) => {
+    if (!files || files.length < 2) {
+      tabs.innerHTML = '';
+      tabs.classList.remove('is-visible');
+      return;
+    }
+    tabs.innerHTML = files.map((file) => (
+      `<button class="floating-code-tab" type="button" data-path="${file.path}">${file.label}</button>`
+    )).join('');
+    tabs.classList.add('is-visible');
+    tabs.querySelectorAll('.floating-code-tab').forEach((tab, index) => {
+      tab.addEventListener('click', () => showFile(files[index].path, files[index].title));
+    });
+  };
+
   const openModal = (button) => {
-    const path = button.dataset.codeFile;
-    if (!path) return;
+    const group = groups[button.dataset.codeGroup];
+    const file = group?.[0] || {
+      path: button.dataset.codeFile,
+      title: button.dataset.codeTitle
+    };
+    if (!file.path) return;
+    configureTabs(group);
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden','false');
     document.body.classList.add('floating-code-open');
-    showFile(path, button.dataset.codeTitle);
+    showFile(file.path, file.title);
+    setTimeout(() => modal.querySelector('.floating-code-close')?.focus(), 20);
   };
+
   const closeModal = () => {
     modal.classList.remove('is-open');
     modal.setAttribute('aria-hidden','true');
     document.body.classList.remove('floating-code-open');
   };
+
   const goToLine = () => {
     const lineCount = Math.max(1, currentCode.split('\n').length);
     const answer = window.prompt(`이동할 줄 번호를 입력하세요. (1–${lineCount})`, '1');
@@ -147,6 +206,7 @@
     codeScroll.scrollTop = (line - 1) * lineHeight;
     codeScroll.focus();
   };
+
   const scrollFromMinimap = (clientY, offset = 0) => {
     if (!minimapViewport) return;
     const rect = minimap.getBoundingClientRect();
@@ -166,22 +226,43 @@
     minimap.setPointerCapture?.(event.pointerId);
     scrollFromMinimap(event.clientY, dragOffset);
   });
-  minimap.addEventListener('pointermove', (event) => { if (dragging) scrollFromMinimap(event.clientY, dragOffset); });
-  minimap.addEventListener('pointerup', () => { dragging = false; });
-  minimap.addEventListener('pointercancel', () => { dragging = false; });
-  codeScroll.addEventListener('scroll', () => { codeLines.scrollTop = codeScroll.scrollTop; syncMinimap(); });
-  document.querySelectorAll('[data-code-file]').forEach((button) => button.addEventListener('click', () => openModal(button)));
+  minimap.addEventListener('pointermove', (event) => {
+    if (!dragging) return;
+    event.preventDefault();
+    scrollFromMinimap(event.clientY, dragOffset);
+  });
+  const stopDrag = (event) => {
+    dragging = false;
+    if (event?.pointerId !== undefined) minimap.releasePointerCapture?.(event.pointerId);
+  };
+  minimap.addEventListener('pointerup', stopDrag);
+  minimap.addEventListener('pointercancel', stopDrag);
+  codeScroll.addEventListener('scroll', () => {
+    codeLines.scrollTop = codeScroll.scrollTop;
+    syncMinimap();
+  });
+
+  document.querySelectorAll('[data-code-file], [data-code-group]').forEach((button) => {
+    button.addEventListener('click', () => openModal(button));
+  });
   document.querySelectorAll('[data-floating-code-close]').forEach((button) => button.addEventListener('click', closeModal));
   lineButton?.addEventListener('click', goToLine);
   copyButton?.addEventListener('click', async () => {
     if (!currentCode) return;
-    try { await navigator.clipboard.writeText(currentCode); copyButton.textContent = 'Copied'; }
-    catch { copyButton.textContent = 'Copy failed'; }
+    try {
+      await navigator.clipboard.writeText(currentCode);
+      copyButton.textContent = 'Copied';
+    } catch {
+      copyButton.textContent = 'Copy failed';
+    }
     setTimeout(() => { copyButton.textContent = 'Copy'; }, 1100);
   });
   document.addEventListener('keydown', (event) => {
     if (!modal.classList.contains('is-open')) return;
     if (event.key === 'Escape') closeModal();
-    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'g') { event.preventDefault(); goToLine(); }
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'g') {
+      event.preventDefault();
+      goToLine();
+    }
   });
 })();
