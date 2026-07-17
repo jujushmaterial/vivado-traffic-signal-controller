@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'ko-KR' }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title | default: site.title }} | Sanghyeon Ju</title>
+  <meta name="description" content="{{ page.description | default: site.description }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+  <link rel="stylesheet" href="{{ '/assets/css/document-v2.css?v=' | append: site.github.build_revision | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/code-viewer.css?v=' | append: site.github.build_revision | relative_url }}">
+</head>
+<body class="document-page">
+  <header class="document-header">
+    <div class="document-header__inner">
+      <a class="document-name" href="https://jujushmaterial.github.io/">Sanghyeon Ju</a>
+      <nav class="document-nav" aria-label="Project navigation">
+        <a href="{{ '/' | relative_url }}">PROJECT HOME</a>
+        <a href="{{ '/study/' | relative_url }}">설계 상세보기</a>
+        <a href="{{ '/source/' | relative_url }}">SOURCE</a>
+        <a href="{{ '/results/' | relative_url }}">RESULTS</a>
+        <a href="https://github.com/jujushmaterial/vivado-traffic-signal-controller">GITHUB</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="document-title">
+    <div>
+      <p>VIVADO · VERILOG · FSM</p>
+      <h1>{{ page.title | default: site.title }}</h1>
+    </div>
+  </section>
+
+  <main class="document-main">
+    <article class="document-content">
+      {{ content }}
+    </article>
+  </main>
+
+  <footer class="document-footer">
+    <a href="https://jujushmaterial.github.io/">← Portfolio Home</a>
+    <a href="{{ '/' | relative_url }}">Project Home</a>
+    <span>Sanghyeon Ju © 2026</span>
+  </footer>
+
+  <div class="floating-code-modal" id="floating-code-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="floating-code-title">
+    <div class="floating-code-backdrop" data-floating-code-close></div>
+    <div class="floating-code-window">
+      <div class="floating-code-titlebar">
+        <strong id="floating-code-title">Verilog Source Code</strong>
+        <button class="floating-code-close" type="button" data-floating-code-close aria-label="Close code viewer">×</button>
+      </div>
+      <div class="floating-code-toolbar">
+        <span class="floating-code-file" id="floating-code-file">source file</span>
+        <div class="floating-code-actions">
+          <button type="button" id="floating-code-line" title="Go to line (Ctrl+G)">Line</button>
+          <button type="button" id="floating-code-copy">Copy</button>
+          <a id="floating-code-github" href="https://github.com/jujushmaterial/vivado-traffic-signal-controller" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+      <div class="floating-editor-shell">
+        <pre class="floating-code-lines" id="floating-code-lines" aria-hidden="true"></pre>
+        <pre class="floating-code-scroll" id="floating-code-scroll" tabindex="0"><code id="floating-code-content"></code></pre>
+        <div class="floating-code-minimap" id="floating-code-minimap" aria-label="Code minimap"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ '/assets/js/document-cleanup.js?v=' | append: site.github.build_revision | relative_url }}"></script>
+  <script src="{{ '/assets/js/code-viewer.js?v=' | append: site.github.build_revision | relative_url }}"></script>
+</body>
+</html>
